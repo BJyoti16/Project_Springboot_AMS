@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Delete</title>
+</head>
+<meta charset="ISO-8859-1">
+<title>Delete</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+  <link rel="stylesheet" href="./style.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+
+  <!-- Include Dexie -->
+  <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+<script >
+$.ajax({ url:"/agency", 
+	 success:function(data) { 
+		 var select='';
+		$.each( data, function(key,value) {
+	        select += '<option val=' + value.agencyid + ' id="opsn">' + value.agencyid + '</option>';
+			 console.log(value.agencyid);
+		})
+		  $('#some_select').html(select);
+       },   
+
+	 type:'GET' 
+} 
+);
+
+
+function doconfirm(){
+	var c= confirm("are you sure to delete the record?");
+	if(c==true){
+		$.ajax({url:"/agency/"+$("#some_select").val(), type:'Delete',success:function(response,status){
+			 console.log(status);
+		  }	  
+		  })
+	}
+}
+</script>
+
+
+
+<body>
+
+<div class="container text-center">
+      <h1 class="bg-light py-4 text-info">
+        <i class="header"></i> <img src="one.png" alt="logo" />Welcome to Agency Details
+      </h1>
+      </div> 
+ <center>  
+<label class="form-label">Agency ID</label>
+<select id="some_select"></select><br><br>
+<button onclick="doconfirm()" style="font-family:Monospace;font-size:14px;color:black;font-weight:700;" class="btn btn-danger" id="btn-update" ><i class="fa fa-trash">Delete</i></button>
+</center>
+
+<div class="d-flex justify-content-center">
+		<img style="width: 50%;" src="img2.jpg" alt="">
+	</div>
+</body>
+</html>

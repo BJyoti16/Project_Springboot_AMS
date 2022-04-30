@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+  <link rel="stylesheet" href="./style.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+
+  <!-- Include Dexie -->
+  <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+<script >
+
+$.ajax({ url:"/agency", 
+	 success:function(data) { 
+		 var select='';
+		$.each( data, function(key,value) {
+	        select += '<option val=' + value.agencyid + ' id="opsn">' + value.agencyid + '</option>';
+			 console.log(value.agencyid);
+		})
+		  $('#some_select').html(select);
+       },   
+
+	 type:'GET' // POSt   PUT   DELETE  
+} 
+);
+
+function EditInfo(){
+	  $.ajax({url:"/agency/"+$("#some_select").val(), 
+		  type:'GET',
+		  success:function(data) {
+			console.log(data);
+			    $('#agencyid1').val(data.agencyid);
+				$('#agencyname1').val(data.agencyname);
+				$('#agencytype1').val(data.agencytype);
+				$('#agencyaddress1').val(data.agencyaddress);
+				$('#agencydesc1').val(data.agencydesc);
+			}
+	  })
+}	  
+function updateData(){
+	var data = {}
+data["agencyname"] = $("#agencyname1").val();
+data["agencytype"] = $("#agencytype1").val();
+data["agencyaddress"] = $("#agencyaddress1").val();
+data["agencydesc"] = $("#agencydesc1").val();
+
+	$.ajax( {url:"/agency/"+ $("#agencyid1").val(), 
+		    contentType: "application/json",
+		    data: JSON.stringify(data), 
+			type:"put",
+			dataType: 'json',
+			success:function(resp, status){
+				console.log(resp+" "+ status);	
+				alert("Inserted");
+			}
+	});
+}
+</script>
+
+
+
+<body>
+
+<div class="container text-center">
+      <h1 class="bg-light py-4 text-info">
+        <i class="header"></i> <img src="one.png" alt="logo" />Welcome to Agency Details
+      </h1>
+      </div> 
+ <center>  
+<label class="form-label">Agency ID</label>
+<select id="some_select"></select><br><br>
+<button type="button" onclick="EditInfo()" class="btn btn-warning fas fa-edit" data-toggle="modal" data-target="#update1" >Show Details</button> </center> 
+
+<div class="d-flex justify-content-center">
+       <img style="width: 50%;"src="img1.jpg" alt="">
+      </div>
+<!-- Modal -->
+<div class="modal fade" id="update1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">  Update Page</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <input type="text" id="agencyid1" name="agencyid" class="form-control" autocomplete="off" placeholder="agency ID" readonly/><br>
+          <input type="text" id="agencyname1" name="agencyname" class="form-control" autocomplete="off" placeholder="agency Name" /><br>
+          <input type="text" id="agencytype1" name="agencytype" class="form-control" autocomplete="off" placeholder="agency Type" /><br>
+          <input type="text" id="agencyaddress1" name="agencyaddress" class="form-control " autocomplete="off" placeholder="agency Address" /><br>
+          <input type="text" id="agencydesc1" name="agencydesc" class="form-control " autocomplete="off" placeholder="agency Desc" /><br>
+          <input style="margin-left: 10%; margin-right: 10%;" type="submit" value="update" class="btn btn-warning"  onclick='updateData();'/><br>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal End -->
+
+
+
+
+</body>
+</html>
